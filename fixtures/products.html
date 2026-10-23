@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Demo Store — Products</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 2rem; background: #f7f7f9; }
+  h1 { font-size: 1.4rem; }
+  #product-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+  .product-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 1rem; }
+  .product-name { margin: 0 0 .5rem; font-size: 1rem; }
+  .product-price { font-weight: 700; color: #146c2e; }
+  .product-rating { color: #b8860b; margin-left: .5rem; }
+  .product-stock { display: block; margin-top: .5rem; font-size: .85rem; }
+  .in { color: #146c2e; } .out { color: #b3261e; }
+  #loading { color: #666; }
+</style>
+</head>
+<body>
+<h1>Demo Store — Products</h1>
+<p id="loading">Loading products…</p>
+<div id="product-list"></div>
+
+<script>
+  // Simulated catalogue data, as if fetched from an API. The list is empty
+  // in the raw HTML — a plain HTTP fetch sees nothing. Only a real browser
+  // that executes JavaScript gets the rendered cards.
+  const PRODUCTS = [
+    { sku: "SKU-001", name: "Wireless Noise-Cancelling Headphones", price: 129.99, rating: 4.8, stock: true },
+    { sku: "SKU-002", name: "Mechanical Keyboard K87",              price: 74.50,  rating: 4.6, stock: true },
+    { sku: "SKU-003", name: "USB-C Docking Station",                price: 89.00,  rating: 4.4, stock: false },
+    { sku: "SKU-004", name: "Ergonomic Wireless Mouse",             price: 45.99,  rating: 4.7, stock: true },
+    { sku: "SKU-005", name: "4K USB Webcam",                        price: 119.00, rating: 4.5, stock: true }
+  ];
+
+  setTimeout(() => {
+    const list = document.getElementById("product-list");
+    document.getElementById("loading").remove();
+    for (const p of PRODUCTS) {
+      const card = document.createElement("article");
+      card.className = "product-card";
+      card.dataset.sku = p.sku;
+      card.innerHTML =
+        '<h3 class="product-name">' + p.name + "</h3>" +
+        '<span class="product-price">$' + p.price.toFixed(2) + "</span>" +
+        '<span class="product-rating">★ ' + p.rating.toFixed(1) + "</span>" +
+        '<span class="product-stock ' + (p.stock ? "in" : "out") + '">' +
+          (p.stock ? "In stock" : "Out of stock") + "</span>";
+      list.appendChild(card);
+    }
+  }, 400);
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Demo Checkout — Order Form</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 2rem; background: #f7f7f9; }
+  form { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 1.5rem; max-width: 420px; }
+  label { display: block; margin: .8rem 0 .3rem; font-weight: 600; }
+  input, select, textarea { width: 100%; padding: .45rem; box-sizing: border-box; }
+  input[type=checkbox] { width: auto; }
+  button { margin-top: 1.2rem; padding: .6rem 1.4rem; background: #146c2e; color: #fff; border: 0; border-radius: 6px; cursor: pointer; }
+  #confirmation { display: none; background: #e6f4ea; border: 1px solid #146c2e; border-radius: 8px; padding: 1.5rem; max-width: 420px; }
+</style>
+</head>
+<body>
+<h1>Demo Checkout</h1>
+
+<form id="order-form">
+  <label for="name">Full name</label>
+  <input id="name" name="name" type="text" required>
+
+  <label for="email">Email</label>
+  <input id="email" name="email" type="email" required>
+
+  <label for="plan">Plan</label>
+  <select id="plan" name="plan">
+    <option value="basic">Basic</option>
+    <option value="standard" selected>Standard</option>
+    <option value="premium">Premium</option>
+  </select>
+
+  <label for="quantity">Quantity</label>
+  <input id="quantity" name="quantity" type="number" min="1" max="10" value="1">
+
+  <label><input id="subscribe" name="subscribe" type="checkbox"> Email me product updates</label>
+
+  <label for="notes">Notes</label>
+  <textarea id="notes" name="notes" rows="3"></textarea>
+
+  <button type="submit">Place order</button>
+</form>
+
+<div id="confirmation"></div>
+
+<script>
+  document.getElementById("order-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const plan = document.getElementById("plan").value;
+    const qty = document.getElementById("quantity").value;
+    // Deterministic demo order id derived from the email, so tests can rely on the format.
+    let sum = 0;
+    for (const ch of email) sum += ch.charCodeAt(0);
+    const orderId = "ORD-" + (1000 + (sum % 9000));
+    const box = document.getElementById("confirmation");
+    box.innerHTML =
+      "<h2>Thank you, " + name + "!</h2>" +
+      "<p>Order <strong>" + orderId + "</strong> confirmed.</p>" +
+      "<p>Plan: " + plan + " · Quantity: " + qty + "</p>" +
+      "<p>A receipt was sent to " + email + ".</p>";
+    box.style.display = "block";
+    document.getElementById("order-form").style.display = "none";
+  });
+</script>
+</body>
+</html>
